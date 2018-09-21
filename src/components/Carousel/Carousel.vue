@@ -7,14 +7,23 @@
       <div
         v-for="slide in slides"
         :key="slide.id"
-        v-bind:class="{ 'slide-hidden': slide.id !== currentSlideId }"
-        class="slide"
+        v-bind:class="{ 'slide-hidden': slide.id !== currentSlideId, 'slide': true }"
       >
         <h2>{{ slide.name }}</h2>
       </div>
     </transition-group>
     <button v-on:click="prevSlide">PREV</button>
     <button v-on:click="nextSlide">NEXT</button>
+    <div class="carousel-actions">
+      <div
+        v-for="slide in slides"
+        :key="slide.id"
+        v-bind:class="{ 'action-active': slide.id === currentSlideId, 'action': true }"
+      >
+        <img :src="slide.imageSrc" alt="About me">
+        <div>{{slide.name}}</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -26,23 +35,21 @@ export default {
       slides: [
         {
           id: 0,
-          name: "Slide1"
+          name: "About Me",
+          component: "",
+          imageSrc: require("../../assets/girl.svg")
         },
         {
           id: 1,
-          name: "Slide2"
+          name: "Skills",
+          component: "",
+          imageSrc: require("../../assets/medal.svg")
         },
         {
           id: 2,
-          name: "Slide3"
-        },
-        {
-          id: 3,
-          name: "Slide4"
-        },
-        {
-          id: 4,
-          name: "Slide5"
+          name: "Contact",
+          component: "",
+          imageSrc: require("../../assets/chat.svg")
         }
       ],
       currentSlideId: 0,
@@ -98,6 +105,41 @@ $slide-width: 500px;
     margin: 0 100px;
     width: 700px;
     height: 400px;
+  }
+}
+
+.carousel-actions {
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .action {
+    cursor: pointer;
+    padding: 10px;
+    margin: 0 30px;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0.8;
+
+    & > img {
+      filter: grayscale(70%);
+      width: 60px;
+      margin-bottom: 7px;
+      transition: 0.7s;
+    }
+
+    &:hover {
+      @extend .action-active;
+    }
+  }
+
+  .action-active {
+    opacity: 1;
+    & > img {
+      filter: grayscale(0%);
+    }
   }
 }
 </style>
